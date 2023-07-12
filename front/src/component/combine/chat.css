@@ -38,9 +38,14 @@ width:300px;
 }
 
 
-.fa-phone-square,.fa-book{
+.fa-phone-square{
 padding-right:60px;
 font-size: 20px;
+}
+
+.fa-book{
+    padding-right:40px;
+    padding-left:0px;
 }
 
 

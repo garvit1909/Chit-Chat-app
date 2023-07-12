@@ -83,11 +83,11 @@ const ChatBox = ({fetchAgain}) => {
       p={3}
       w="100%"
       h="100%"
-      overflowY='hidden'
+      // overflowY="auto"
       >
          { chats?
           (
-<Stack overflowY='scroll'>
+<Stack overflowY="scroll">
 {chats.map((chat)=>(
   <Box
   onClick={()=>setSelectedChat(chat )}

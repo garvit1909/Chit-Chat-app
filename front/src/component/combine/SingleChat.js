@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../../Context/ChatProvider'
-import { Box, Button, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box,Button, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { getSender,getSenderFull } from '../../config2/chatLogic';
 import ProfileModal from './ProfileModal';
@@ -15,7 +15,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
        
   const [loading,setLoading]=useState(false);
   const [messages,setMessages]=useState([]);
-  const [newMessage,setNewMessage]=useState("");
+  const [newMessage,setNewMessage]=useState();
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
@@ -24,7 +24,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
   
 
-  const {user,selectedChat, setSelectedChat,notification,setNotification}=ChatState()
+  const {user,selectedChat, setSelectedChat}=ChatState()
 
 const fetchMessage=async()=>{
     if(!selectedChat) return;
@@ -61,7 +61,7 @@ const fetchMessage=async()=>{
      try {
          const config={
         headers:{
-          "Content-type":"application/json",
+          "Content-Type":"application/json",
           Authorization: `Bearer ${user.token}`,
         },
       };
@@ -71,9 +71,10 @@ const fetchMessage=async()=>{
         chatId:selectedChat._id,
       },
       config);
-    socket.emit("new message",data)
+      console.log(data);
+    socket.emit("new message",data);
       setMessages([...messages,data]);
-        console.log(data);
+        
      } catch (error) {
       toast({ 
           title: 'Error Occured',
@@ -85,6 +86,17 @@ const fetchMessage=async()=>{
         return;
       }  
     }}
+
+     useEffect(() => {
+    socket = io(ENDPOINT);
+        socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on('typing',()=>setIsTyping(true))
+    socket.on("stop typing",()=>setIsTyping(false));
+     },[]);
+
+
+
 const typingHandler=(e)=>{
 setNewMessage(e.target.value);
 
@@ -107,16 +119,10 @@ setNewMessage(e.target.value);
   };
       
 
-     useEffect(() => {
-    socket = io(ENDPOINT);
-        socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
-    socket.on('typing',()=>setIsTyping(true))
-    socket.on("stop typing",()=>setIsTyping(false));
-     },[]);
-
+    
     useEffect(()=>{
 fetchMessage();
+selectedChatCompare=selectedChat;
     },[selectedChat]);
 
 
@@ -125,11 +131,13 @@ fetchMessage();
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageRecieved.chat._id
-      ) {
-        if (!notification.includes(newMessageRecieved)) {
-          setNotification([newMessageRecieved, ...notification]);
-          setFetchAgain(!fetchAgain);
-        }
+      ) 
+      {
+        // if (!notification.includes(newMessageRecieved)) {
+        //   setNotification([newMessageRecieved, ...notification]);
+        //   setFetchAgain(!fetchAgain);
+        // }
+      }
       else {
         setMessages([...messages, newMessageRecieved]);
       }});
@@ -183,9 +191,10 @@ fetchMessage();
 d="flex"
 flexDir="column"
 // bg='rgb(35,35,35,0.6)'
-h="670px"
+h="540px"
+width="900px"
+overflowY="auto"
 borderRadius="1g"
-overflowY="hidden"
 > 
 
 
@@ -201,14 +210,17 @@ overflowY="hidden"
 
    />
   ):(
-    <div className='message'>
-      <ScrollableChat messages={messages}/>
+  
+       <div className='message'>
+      <ScrollableChat  messages={messages}/>
     </div>
 )}  
- <FormControl position="fixed" bottom={0}  isRequired >
-  <Box backgroundColor="black"  width="900px" height="130px">
+</Box>
+
+ <FormControl position="fixed" bottom={0}  isRequired>
+  <Box backgroundColor="rgb(0,0,0)"  width="900px" height="130px">
     {istyping?
-    (<div>loading</div>
+    (<div color="white">loading...</div>
     ):(
     <></>
     )}
@@ -224,14 +236,12 @@ marginLeft="15px"
 marginRight="15px"
 value={newMessage}
 onChange={typingHandler}/>
-
      <Button onClick={sendMessage}>
   <i class="fa fa-paper-plane" height="70px" color='white' aria-hidden="true"></i>
      </Button>
      </Box>
  </FormControl>
 
-  </Box>
       </>
    ): (
       <Box d='flex' alignItems='center' justifyContent='center' h='100%'>

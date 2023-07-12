@@ -43,7 +43,7 @@ const server = app.listen(PORT,console.log(`server started on port ${PORT}`));
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5000",
+    origin: "http://localhost:3000",
     // credentials: true,
   },
 });
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
  socket.on("setup", (userData) => {
     socket.join(userData._id);
-    console.log(userData._id)
+    console.log(userData._id);
     socket.emit("connected");});
 
     socket.on("join chat",(room)=>{
@@ -72,9 +72,9 @@ io.on("connection", (socket) => {
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
   });
-  socket.off("setup",()=>{
-    console.log("user disconnected");
-    socket.leave(userData._id);
-  });
+//   socket.off("setup",()=>{
+//     console.log("user disconnected");
+//     socket.leave(userData._id);
+//   });
 
  });

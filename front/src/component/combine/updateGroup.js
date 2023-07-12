@@ -183,7 +183,7 @@ const UpdateGroup = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       },config);
 
       user1._id===user._id ? setSelectedChat():setSelectedChat(data);
-      fetchAgain(!fetchAgain);
+      fetchAgain(!fetchAgain); 
       fetchMessages();
       setLoading(false);
      } catch (error) {

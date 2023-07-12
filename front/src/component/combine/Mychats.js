@@ -10,11 +10,9 @@ import UserList from '../userAv/UserList'
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
 } from '@chakra-ui/react';
 import "./chat.css"
 import {
@@ -131,8 +129,8 @@ onClose();
      <Button className='search call' colorScheme='gray' variant='' justifyContent='start'> <i class="fa fa-phone-square" aria-hidden="true"></i>Phone</Button></Tooltip>
      <Tooltip label="Unread Messages" placement='bottom-end' hasArrow aria-label='A tooltip'>
 <Menu>
-  <MenuButton   className='search message' colorScheme="gray"  variant='' justifyContent='start'>
-    <i class="fa fa-book"   aria-hidden="true"></i> Notifications
+  <MenuButton   className="search message" fontSize="18px" fontWeight="500"  colorScheme="gray"  variant='' justifyContent='start'>
+    <i class="fa fa-book"    aria-hidden="true"></i> Notifications
   </MenuButton>
   <MenuList pl={2}>
     {!notification.length && "No new messages"}
