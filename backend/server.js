@@ -16,13 +16,6 @@ connecti();
 app.use(express.json()); 
 
 
-
-app.get('/', function(req,res){
-    res.send("this is my api successfully")
-})
-
-
-
 app.use('/api/user',userRouter);
 app.use('/api/chat',chatRoutes);
 app.use('/api/message', messageRoutes);
