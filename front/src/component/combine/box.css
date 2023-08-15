@@ -1,0 +1,31 @@
+.chatbox{
+    width: 400px;
+    height:745px ;
+    background-color: rgb(0,0,0);
+    border: 1px solid rgb(37,36,36);}
+
+.head2{
+    font-size:40px;
+    font-weight: 600;
+    color:white ;
+    margin-top: 50px;
+    margin-left: 25px;
+}
+
+.add{
+    background-color: white;
+    color: black;
+}
+
+.fa-bell{
+    margin-top: 0px;
+    font-size: 30px;
+    color:yellow;
+    /* background-color:yellow; */
+    padding: 4px;
+    border-radius: 5px;
+    
+}
+.mess{
+    display: inline;
+}
